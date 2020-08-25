@@ -1,0 +1,9 @@
+/marlin-dev-php
+/lessons
+*.log
+*.tar.gz
+*.tar
+*.zip
+.DS_Store
+.idea/
+*.swp 
