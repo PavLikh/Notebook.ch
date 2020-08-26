@@ -1,17 +1,14 @@
 <?php
 
-$tasks = [
-	[
-		"id" => 15,
-		"title" => "Go to the store",
-		"content" => "asdasdasd"
-
-	],
-
-];
-
+// 1. Connect
+$pdo = new PDO("mysql:host=localhost; dbname=notebook", "root", "");
+// 2. Prepare the statement
+$statement = $pdo->prepare("SELECT * FROM tasks"); //подготовить
+$result = $statement->execute(); //выполнить
+$tasks = $statement->fetchAll(PDO::FETCH_ASSOC);//die; // получаем массив fetchAll() ["id"]=>"16", [0]=> "16" .../ fetchAll(2) ["id"]=>"16" .../  то же что константа PDO::FETCH_ASSOC = 2
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,20 +22,20 @@ $tasks = [
 		<div class="row">
 			<div class="col-md-12">
 				<h1>All Tasks</h1>
-				<a href="#" class="btn btn-success">Add Task</a>
+				<a href="create.php" class="btn btn-success">Add Task</a>
 				<table class="table">
 					<thead>
 						<tr>
-							<th><?=$task['id'];?></th>
-							<th><?=$task['title'];?></th>
+							<th>1</th>
+							<th>Title</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php foreach($tasks as $task):?>
 							<tr>
-								<td>1</td>
-								<td>Go to the store</td>
+								<td><?=$task['id'];?></td>
+								<td><?=$task['title'];?></td>
 								<td>
 									<a href="#" class="btn btn-warning">
 										Edit
