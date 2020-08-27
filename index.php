@@ -37,10 +37,13 @@ $tasks = $statement->fetchAll(PDO::FETCH_ASSOC);//die; // получаем ма�
 								<td><?=$task['id'];?></td>
 								<td><?=$task['title'];?></td>
 								<td>
-									<a href="#" class="btn btn-warning">
+									<a href="show.php?id=<?= $task['id']; ?>" class="btn btn-info">
+										Show
+									</a>
+									<a href="edit.php?id=<?= $task['id']; ?>" class="btn btn-warning">
 										Edit
 									</a>
-									<a href="#" class="btn btn-danger">
+									<a onclick ="return confirm('Are you sure');" href="delete.php?id=<?= $task['id']; ?>" class="btn btn-danger">
 										Delete
 									</a>
 								</td>
