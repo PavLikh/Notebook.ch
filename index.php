@@ -1,20 +1,9 @@
 <?php
 
+require 'database/QueryBuilder.php';
 
-//Tasks list
-function getAllTasks()
-{
-// 1. Connect
-$pdo = new PDO("mysql:host=localhost; dbname=notebook", "root", "");
-// 2. Prepare the statement
-$statement = $pdo->prepare("SELECT * FROM tasks"); //подготовить
-$result = $statement->execute(); //выполнить
-$tasks = $statement->fetchAll(PDO::FETCH_ASSOC);//die; // получаем массив fetchAll() ["id"]=>"16", [0]=> "16" .../ fetchAll(2) ["id"]=>"16" .../  то же что константа PDO::FETCH_ASSOC = 2
-
-return $tasks;
-};
-
-$tasks = getAllTasks();
+$db = new QueryBuilder;
+$tasks = $db->getAllTasks();
 ?>
 
 <!DOCTYPE html>

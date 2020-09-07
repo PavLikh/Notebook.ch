@@ -1,5 +1,10 @@
 <?php
 
+require 'database/QueryBuilder.php';
+
+$db = new QueryBuilder;
+
+
 $data = [
 	'id' => $_GET['id'],
 	'title' => $_POST['title'],
@@ -7,14 +12,6 @@ $data = [
 ];
 
 
-function updateTask($data)
-{
-$pdo = new PDO("mysql:host=localhost; dbname=notebook", "root", "");
-$sql = "UPDATE tasks SET title=:title, content=:content WHERE id=:id";
-$statement = $pdo->prepare($sql);
-$statement->execute($data);
+$db->updateTask($data);
 
 header("Location: /"); exit;
-}
-
-updateTask($data);

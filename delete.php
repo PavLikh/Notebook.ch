@@ -1,16 +1,11 @@
 <?php
+
+require 'database/QueryBuilder.php';
+
+$db = new QueryBuilder;
+
 $id = $_GET['id'];
 
-
-function deleteTask($id)
-{
-$sql = "DELETE FROM tasks WHERE id=:id";
-$pdo =new PDO("mysql:host=localhost; dbname=notebook", "root", "");
-$statement = $pdo->prepare($sql);
-$statement->bindParam("id", $id);
-$statement->execute();
+$db->deleteTask($id);
 
 header("Location: /"); exit;
-}
-
-deleteTask($id);

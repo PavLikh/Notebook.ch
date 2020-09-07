@@ -1,19 +1,10 @@
 <?php
 
 
-function addTask($data)
-{
-	$sql = "INSERT INTO tasks (title, content) VALUES(:title, :content)"; //передали метки :title...
-	$pdo = new PDO("mysql:host=localhost; dbname=notebook", "root", "");		
-	$statement = $pdo->prepare($sql);
-	//$statement->bindParam(":title", $_POST["title"]); // привязали метки bindParam
-	//$statement->bindParam(":content", $_POST["content"]);
-	//$statement->execute();
+require 'database/QueryBuilder.php';
 
+$db = new QueryBuilder;
 
-	$statement->execute($data); //чтобы не использовать bindParam для каждой метки
+$db->addTask($_POST);
 
-	header("Location: /"); exit;
-}
-
-addTask($_POST);
+header("Location: /"); exit;
