@@ -3,6 +3,7 @@
 class QueryBuilder
 {
 	public $pdo;
+
 	function __construct()
 	{
 		// 1. Connect
@@ -32,10 +33,18 @@ class QueryBuilder
 		return $results;
 	}
 
-	//Add new task in database
-	function addTask($data)
+	//Add new one item in database
+	function store($table, $data)
 	{	
-		$sql = "INSERT INTO tasks (title, content) VALUES(:title, :content)"; //передали метки :title...
+		//для корректной работы нужны создать динамическую строку корректного sql запроса
+		// 1. get keys // 
+		$keys = array_keys($data);
+		// 2. create string  title, content // 
+		$stringOfKeys = implode(',', $keys);
+		// 3. сформировать метки :*...
+		$placeholders = ":".implode(', :', $keys);
+
+		$sql = "INSERT INTO $table ($stringOfKeys) VALUES($placeholders)"; //передали метки :title...
 		$statement = $this->pdo->prepare($sql);
 		//$statement->bindParam(":title", $_POST["title"]); // привязали метки bindParam
 		//$statement->bindParam(":content", $_POST["content"]);
@@ -45,27 +54,36 @@ class QueryBuilder
 	}
 
 	//Get one task for show on display
-	function getTask($id)
+	function getOne($table, $id)
 	{
-		$statement = $this->pdo->prepare("SELECT * FROM tasks WHERE id=:id");
+		$statement = $this->pdo->prepare("SELECT * FROM $table WHERE id=:id");
 		$statement->bindParam(":id", $id);
 		$statement->execute();
-		$task = $statement->fetch(PDO::FETCH_ASSOC);
+		$result = $statement->fetch(PDO::FETCH_ASSOC);
 
-		return $task;
+		return $result;
 	}
 
-	function updateTask($data)
-	{
-		$sql = "UPDATE tasks SET title=:title, content=:content WHERE id=:id";
+	function update($table, $data)
+	{	
+		// формируем динамическую строку для sql запроса 
+		$fields = '';
+		
+		foreach($data as $key => $value) {
+			$fields .= $key . "=:" . $key . ",";
+		}
+		$fields = rtrim($fields, ','); //удаляем запятую справа
+
+		
+		$sql = "UPDATE $table SET $fields WHERE id=:id";
 		$statement = $this->pdo->prepare($sql);
 		$statement->execute($data);
 	}
 
 	//Delete task
-	function deleteTask($id)
+	function delete($table, $id)
 	{
-		$sql = "DELETE FROM tasks WHERE id=:id";
+		$sql = "DELETE FROM $table WHERE id=:id";
 		$statement = $this->pdo->prepare($sql);
 		$statement->bindParam("id", $id);
 		$statement->execute();
