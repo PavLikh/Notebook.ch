@@ -1,11 +1,29 @@
 <?php
 
+if(!session_status())
+{
+	session_start();
+}
+
 require 'database/QueryBuilder.php';
+require 'components/Auth.php';
 
 $db = new QueryBuilder;
 //$tasks = $db->getAllTasks();
-$tasks = $db->all('tasks');
+//$tasks = $db->all('tasks');
+$auth = new Auth($db);
 
+$email = 'user3@example.com';
+$password = 'asd1';
+
+//$auth->register($email, $password);
+$auth->login($email, $password);
+//$auth->logout();
+
+$user = $auth->currentUser();
+
+
+exit;
 ?>
 
 <!DOCTYPE html>
